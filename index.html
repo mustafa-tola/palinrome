@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="txt" />
+  <button onclick="checking()">Check</button>
+  <p id="p1"></p>
+</body>
+<script>
+  function checking() {
+    var val = "";
+    var re;
+    var lowRegStr;
+    var reverseStr;
+    var chk = "";
+    var maxp_length = 0;
+    var maxp = [];
+    val = document.getElementById("txt").value;
+
+    function palindrome(str) {
+      re = /[\W_]/g;
+      lowRegStr = str.toLowerCase().replace(re, "");
+      reverseStr = lowRegStr
+        .split("")
+        .reverse()
+        .join("");
+      return reverseStr === lowRegStr;
+    }
+
+    chk = palindrome(val);
+    if (chk == true) {
+      document.getElementById("p1").innerHTML = `${val} is a palindrome word`;
+    } else {
+      longestPalind(val);
+    }
+
+    function longestPalind(s) {
+      for (var i = 0; i < s.length; i++) {
+        var subs = s.substr(i, s.length);
+        for (var j = s.length; j >= 0; j--) {
+          var sub_subs = subs.substr(0, j);
+          if (palindrome(sub_subs) && sub_subs.length > 2) {
+            if (sub_subs.length > maxp_length) {
+              maxp_length = sub_subs.length;
+              maxp.push(sub_subs);
+            }
+          }
+        }
+      }
+    }
+    console.log(maxp);
+    if (maxp == []) {
+      return "no palindrome";
+    } else {
+      var length = 0;
+      var lpalind;
+      for (var i = 0;i < maxp.length;i++) {
+        if (maxp[i].length > length) {
+          length = maxp[i].length;
+          lpalind = maxp[i];
+        }
+      }
+      console.log(`${lpalind} is the longest palindrome in this sentence`);
+    }
+  }
+</script>
+
+</html>
